@@ -21,7 +21,7 @@ make dlpack dlpack.so
 python3 dlpack.py numpy.bin
 python3 dlpack.py torch.bin
 
-# check that both ways of importing DLPack work
+# check that both ways of importing DLPack tensors work
 diff golden.bin numpy.bin
 diff golden.bin torch.bin
 ```
