@@ -90,40 +90,28 @@ PyCapsule_GetPointer = ctypes.pythonapi.PyCapsule_GetPointer
 PyCapsule_GetPointer.restype = ctypes.c_void_p
 PyCapsule_GetPointer.argtypes = (ctypes.py_object, ctypes.c_char_p)
 
-class CreateAndAllocateDlpackTensor(DLManagedTensor):
-	def __init__(self, lib_path = os.path.abspath('dlpack.so')):
-		self.lib = ctypes.CDLL(lib_path)
-		self.lib.create_and_allocate_dlpack_tensor.restype = CreateAndAllocateDlpackTensor	
-
-	def __call__(self):
-		return self.lib.create_and_allocate_dlpack_tensor()
-
-	def to_dlpack(self):
-		return PyCapsule_New(ctypes.byref(self), b'dltensor', None)
-
-	def free(self):
-		self.deleter(ctypes.byref(self))
-
+def to_dlpack(dl_managed_tensor):
+	return PyCapsule_New(ctypes.byref(dl_managed_tensor), b'dltensor', None)
+		
 def numpy_from_dlpack(pycapsule):
-	data = ctypes.cast(PyCapsule_GetPointer(pycapsule, b'dltensor'), ctypes.POINTER(DLManagedTensor)).contents
-	wrapped = type('', (), dict(__array_interface__ = data.dl_tensor.__array_interface__, __del__ = lambda self: data.deleter(ctypes.byref(data))))()
+	dl_managed_tensor = ctypes.cast(PyCapsule_GetPointer(pycapsule, b'dltensor'), ctypes.POINTER(DLManagedTensor)).contents
+	wrapped = type('', (), dict(__array_interface__ = dl_managed_tensor.dl_tensor.__array_interface__, __del__ = lambda self: dl_managed_tensor.deleter(ctypes.byref(dl_managed_tensor))))()
 	return numpy.asarray(wrapped)
 	
-
 if __name__ == '__main__':
 	import numpy
 	import torch.utils.dlpack
 	
-	create_and_allocate_dlpack_tensor = CreateAndAllocateDlpackTensor()
+	lib = ctypes.CDLL(os.path.abspath('dlpack.so'))
+	lib.create_and_allocate_dlpack_tensor.restype = DLManagedTensor
+	dl_managed_tensor = lib.create_and_allocate_dlpack_tensor()
 	
-	res = create_and_allocate_dlpack_tensor()
-	dlpack_tensor = res.to_dlpack()
+	dlpack_tensor = to_dlpack(dl_managed_tensor)
 
 	if 'numpy' in sys.argv[1]:
 		array = numpy_from_dlpack(dlpack_tensor)
 	elif 'torch' in sys.argv[1]:
 		array = torch.utils.dlpack.from_dlpack(dlpack_tensor)
 	
-	import IPython; IPython.embed()
 	array.tofile(sys.argv[1])
 	del dlpack_tensor
