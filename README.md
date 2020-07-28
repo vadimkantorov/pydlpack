@@ -8,6 +8,8 @@ This is an example of:
 
 A more complete example of reading an audio file with ffmpeg library in C and consuming it via DLPack is available at https://github.com/vadimkantorov/readaudio
 
+DLPack header is taken from https://github.com/dmlc/dlpack/blob/master/include/dlpack/dlpack.h
+
 ### Usage
 ```shell
 make dlpack dlpack.so
