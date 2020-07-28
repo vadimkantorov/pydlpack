@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// https://github.com/dmlc/dlpack/blob/3efc489b55385936531a06ff83425b719387ec63/include/dlpack/dlpack.h
+// exact commit is in readme, master; https://github.com/dmlc/dlpack/blob/master/include/dlpack/dlpack.h
 #include "dlpack.h"
 
 void deleter(struct DLManagedTensor* self)
