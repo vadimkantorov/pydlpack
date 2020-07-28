@@ -45,12 +45,15 @@ struct DLManagedTensor create_and_allocate_dlpack_tensor()
 	dlpack.dl_tensor.strides[1] = 1;
 	uint64_t itemsize = dlpack.dl_tensor.dtype.lanes * dlpack.dl_tensor.dtype.bits / 8;
 	uint32_t* data_ptr = calloc(dlpack.dl_tensor.shape[0] * dlpack.dl_tensor.shape[1], itemsize);
+	
+	// 3x2 int32 tensor with some sample data
 	data_ptr[0] = 0;
 	data_ptr[1] = 1;
 	data_ptr[2] = 2;
 	data_ptr[3] = 3;
 	data_ptr[4] = 4;
 	data_ptr[5] = 5;
+	
 	dlpack.dl_tensor.data = data_ptr;
 	return dlpack;
 }
