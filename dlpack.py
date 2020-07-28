@@ -69,9 +69,11 @@ class DLTensor(ctypes.Structure):
 	@property
 	def __array_interface__(self):
 		shape = tuple(self.shape[dim] for dim in range(self.ndim))
-		strides = tuple(self.strides[dim] for dim in range(self.ndim))
+		strides = tuple(self.strides[dim] * self.itemsize for dim in range(self.ndim))
 		typestr = '|' + str(self.dtype.type_code)[0] + str(self.itemsize)
-		return dict(version = 3, shape = shape, strides = strides, data = (self.data, True), offset = self.byte_offset, typestr = typestr)
+		res = dict(version = 3, shape = shape, strides = strides, data = (self.data, True), offset = self.byte_offset, typestr = typestr)
+		print(res)
+		return res
 
 class DLManagedTensor(ctypes.Structure):
 	_fields_ = [
@@ -118,9 +120,10 @@ if __name__ == '__main__':
 	dlpack_tensor = res.to_dlpack()
 
 	if 'numpy' in sys.argv[1]:
-		numpy_from_dlpack(dlpack_tensor).tofile(sys.argv[1])
-	
+		array = numpy_from_dlpack(dlpack_tensor)
 	elif 'torch' in sys.argv[1]:
-		torch.utils.dlpack.from_dlpack(dlpack_tensor).tofile(sys.argv[1])
-
+		array = torch.utils.dlpack.from_dlpack(dlpack_tensor)
+	
+	import IPython; IPython.embed()
+	array.tofile(sys.argv[1])
 	del dlpack_tensor
