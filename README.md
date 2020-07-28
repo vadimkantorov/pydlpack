@@ -12,13 +12,14 @@ A more complete example of reading an audio file with ffmpeg library in C and co
 ```shell
 make dlpack dlpack.so
 
-# dump golden.bin
+# dump golden.bin with some test data
 ./dlpack golden.bin
 
 # dump numpy.bin and torch.bin
 python3 dlpack.py numpy.bin
 python3 dlpack.py torch.bin
 
+# check that both ways of importing DLPack work
 diff golden.bin numpy.bin
 diff golden.bin torch.bin
 ```
