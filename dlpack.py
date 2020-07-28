@@ -1,5 +1,3 @@
-import os
-import sys
 import ctypes
 
 class DLDeviceType(ctypes.c_int):
@@ -99,6 +97,8 @@ def numpy_from_dlpack(pycapsule):
 	return numpy.asarray(wrapped)
 	
 if __name__ == '__main__':
+	import os
+	import sys
 	import numpy
 	import torch.utils.dlpack
 	
