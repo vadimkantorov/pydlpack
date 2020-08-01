@@ -31,6 +31,9 @@ class DLDataType(ctypes.Structure):
 	def descr(self):
 		typestr = str(self.type_code) + str(self.bits)
 		return [('f' + str(l), typestr) for l in range(self.lanes)]
+	
+	def __str__(self):
+		return repr(self.descr)
 
 class DLContext(ctypes.Structure):
 	_fields_ = [
@@ -69,9 +72,10 @@ class DLTensor(ctypes.Structure):
 		shape = tuple(self.shape[dim] for dim in range(self.ndim))
 		strides = tuple(self.strides[dim] * self.itemsize for dim in range(self.ndim))
 		typestr = '|' + str(self.dtype.type_code)[0] + str(self.itemsize)
-		res = dict(version = 3, shape = shape, strides = strides, data = (self.data, True), offset = self.byte_offset, typestr = typestr)
-		print(res)
-		return res
+		return dict(version = 3, shape = shape, strides = strides, data = (self.data, True), offset = self.byte_offset, typestr = typestr)
+	
+	def __str__(self):
+		return 'dtype={dtype}, ndim={ndim}, shape={shape}, strides={strides}, byte_offset={byte_offset}'.format(dtype = self.dtype, ndim = self.ndim, shape = tuple(self.shape[i] for i in range(self.ndim)), strides = tuple(self.strides[i] for i in range(self.ndim)), byte_offset = self.byte_offset)
 
 class DLManagedTensor(ctypes.Structure):
 	_fields_ = [
