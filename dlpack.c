@@ -63,8 +63,6 @@ int main(int argc, char **argv)
 	struct DLManagedTensor dlpack = create_and_allocate_dlpack_tensor();
 	uint64_t itemsize = dlpack.dl_tensor.dtype.lanes * dlpack.dl_tensor.dtype.bits / 8;
 	
-	FILE *out = fopen(argv[1], "wb");
-	fwrite(dlpack.dl_tensor.data, itemsize, dlpack.dl_tensor.shape[0] * dlpack.dl_tensor.shape[1], out);
-	fclose(out);
+	fwrite(dlpack.dl_tensor.data, itemsize, dlpack.dl_tensor.shape[0] * dlpack.dl_tensor.shape[1], fopen(argv[1], "wb"));
 	return 0;
 }
