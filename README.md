@@ -12,12 +12,12 @@ DLPack header is taken from https://github.com/dmlc/dlpack/blob/3efc489b55385936
 
 ### Usage
 ```shell
-make dlpack libdlpack.so
-
 # dump golden.bin with some test data
+make dlpack
 ./dlpack golden.bin
 
 # dump numpy.bin and torch.bin
+make libdlpack.so
 python3 dlpack.py numpy.bin
 python3 dlpack.py torch.bin
 
