@@ -12,7 +12,7 @@ DLPack header is taken from https://github.com/dmlc/dlpack/blob/3efc489b55385936
 
 ### Usage
 ```shell
-make dlpack dlpack.so
+make dlpack libdlpack.so
 
 # dump golden.bin with some test data
 ./dlpack golden.bin

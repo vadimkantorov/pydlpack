@@ -106,7 +106,7 @@ if __name__ == '__main__':
 	import numpy
 	import torch.utils.dlpack
 	
-	lib = ctypes.CDLL(os.path.abspath('dlpack.so'))
+	lib = ctypes.CDLL(os.path.abspath('libdlpack.so'))
 	lib.create_and_allocate_dlpack_tensor.restype = DLManagedTensor
 	dl_managed_tensor = lib.create_and_allocate_dlpack_tensor()
 	
