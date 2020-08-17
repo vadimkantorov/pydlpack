@@ -7,7 +7,7 @@
 
 void deleter(struct DLManagedTensor* self)
 {
-	//fprintf(stderr, "Deleter calling\n");
+	fprintf(stderr, "Deleter calling\n");
 	if(self->dl_tensor.data)
 	{
 		free(self->dl_tensor.data);
@@ -25,7 +25,7 @@ void deleter(struct DLManagedTensor* self)
 		free(self->dl_tensor.strides);
 		self->dl_tensor.strides = NULL;
 	}
-	//fprintf(stderr, "Deleter called\n");
+	fprintf(stderr, "Deleter called\n");
 }
 
 struct DLManagedTensor create_and_allocate_dlpack_tensor()
