@@ -10,6 +10,9 @@ A more complete example of reading an audio file with ffmpeg library in C and co
 
 DLPack header is taken from https://github.com/dmlc/dlpack/blob/3efc489b55385936531a06ff83425b719387ec63/include/dlpack/dlpack.h
 
+### License for my code: dlpack.c and dlpack.py
+MIT
+
 ### Usage
 ```shell
 # dump golden.bin with some test data
